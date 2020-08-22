@@ -1,0 +1,34 @@
+header {
+    background-color: mediumslateblue;
+    & h1 {
+        color: orangered;
+        margin: auto;
+        text-align: center;
+
+    }
+}
+
+footer {
+    background-color: navy;
+    & div{
+        color: black;
+        font-size: medium;
+        font-weight: 800;
+    }
+}
+
+.format{
+    background-color: deepskyblue;
+    & p{
+        color: black;
+        font-size: medium;
+        font-weight: 800; 
+       
+    }
+    & span{
+        background-color: red;
+    }
+}
+form{   
+    border: 1px solid black;
+}
