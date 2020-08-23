@@ -1,5 +1,6 @@
 <?php
 //error check
+//二回目
 if($_POST['name'] === ''){
     $error['name'] = 'nothing';
 }
