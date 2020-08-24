@@ -1,23 +1,12 @@
 <?php
 
-require_once("method.php");
-//error check
 
-if($_POST['name'] === ''){
-    $error['name'] = 'nothing';
-}
-if($_POST['address'] === ''){
-    $error['address'] = 'nothing';
-}
-if($_POST['age'] === ''){
-    $error['age'] = 'nothing';
-}
-if($_POST['email'] === ''){
-    $error['email'] = 'nothing';
-}
-if($_POST['password'] === ''){
-    $error['password'] = 'nothing';
-}
+//error check
+require_once("method.php");
+
+
+
+
 
 ?>
 
@@ -38,35 +27,37 @@ if($_POST['password'] === ''){
             <form action="" method = "post">
             
                 <p>名前<span>※必須</span></p>
-                <input type="text"　name = "name" value="<?php e($_POST['name']); ?>" >
+                <input type="text" name="name" value="<?php xxe($_POST['name']); ?>" >
                 <!--エラーメッセージ-->
-                <?php if($error['name'] = 'nothing'):?>
+                <?php if(error($_POST['name'])):?>
                 <p>名前を入力してください</p>  
                 <?php endif; ?>
+
+               
                 
                 <p>住所<span>※必須</span></p>
-                <input type="text"　name = "address" value="">
+                <input type="text" name = "address" value="<?php print "Hello"; ?>">
                     <!--エラーメッセージ-->
                 <?php if($error['name'] = 'nothing'):?>
                 <p>住所を入力してください</p>  
                 <?php endif; ?>
                 
                 <p>年齢<span>※必須</span></p>
-                <input type="text"　name = "age" value="">
+                <input type="text" name = "age" value="">
                     <!--エラーメッセージ-->
                 <?php if($error['name'] = 'nothing'):?>
                 <p>年齢を入力してください</p>  
                 <?php endif; ?>
                 
                 <p>メールアドレス <span>※必須</span></p>
-                <input type="text"　name = "email" value="">
+                <input type="text" name = "email" value="">
                     <!--エラーメッセージ-->
                 <?php if($error['name'] = 'nothing'):?>
                 <p>メールアドレスを入力してください</p>  
                 <?php endif; ?>
 
                 <p>パスワード<span>※必須</span></p>
-                <input type="text"　name = "password" value="">
+                <input type="text" name = "password" value="">
                     <!--エラーメッセージ-->
                 <?php if($error['name'] = 'nothing'):?>
                 <p>パスワードを入力してください</p>  
