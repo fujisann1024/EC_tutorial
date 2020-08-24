@@ -1,4 +1,6 @@
 <?php
+
+require_once("method.php");
 //error check
 
 if($_POST['name'] === ''){
@@ -36,7 +38,7 @@ if($_POST['password'] === ''){
             <form action="" method = "post">
             
                 <p>名前<span>※必須</span></p>
-                <input type="text"　name = "name" value="" >
+                <input type="text"　name = "name" value="<?php e($_POST['name']); ?>" >
                 <!--エラーメッセージ-->
                 <?php if($error['name'] = 'nothing'):?>
                 <p>名前を入力してください</p>  
