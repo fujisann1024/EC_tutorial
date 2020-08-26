@@ -18,4 +18,21 @@ Class MyValidator{
         $this->checkNull();
         $this->checkNull();
     }
+    //配列要素に含まれている文字エンコーディングをチェック
+    private function checkEncoding(array $data){
+        foreach($data as $key => $value){
+            if(!mb_check_encoding($value)){
+                $this->$errors[] = "{$key}は不正な文字コードです";
+            }
+        }
+    }
+
+    //配列要素に含まれるnullバイトをチェックする
+    private function checkNull(array $data){
+        foreach($data as $key => $value){
+            if(preg_match('/\0/',$value)){
+                $this->$errors[] = "{$key}は不正な文字を含んでいます";
+            }
+        }
+    }
 }

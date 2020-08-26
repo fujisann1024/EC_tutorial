@@ -46,7 +46,7 @@ if(!empty($_POST)){
             <form action="" method = "post">
             
                 <p>名前<span>※必須</span></p>
-                <input type="text" name="name" value="<?php xxe($_POST['name']); ?>" >
+                <input type="text" name="name" value="<?php xss($_POST['name']); ?>" >
                 <!--エラーメッセージ-->
                 <!---->
                 <?php emptyError($_POST['name']);?>
