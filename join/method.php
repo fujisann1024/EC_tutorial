@@ -1,21 +1,20 @@
 <?php
-$error = null;
+
 
 require_once("MyValidator.php");
 function xss($information, $set = "UTF-8"){
     print(htmlspecialchars($information,ENT_QUOTES | ENT_HTML5, $set));
 }
 //名前に関するエラーメソッド
-function NameError(string $value,$name = "名前"){
+function NameError($value,$name = "名前"){
     if(empty($value['name'])){
-        global $error;
+        
         print '<p style="color:red;">' . $name . "は必須入力です</p>";
-        return  $error += 1;
+        
     }
 }
 //パスワードに関するエラーメソッド
-function PasswordError($value, int $len = 8, $name = "パスワード"){
-    global $error;
+function PasswordError($value,$len = 8, $name = "パスワード"){
 
     //パスワードの入力欄が空でない場合
     if(!empty($value['password'])){
@@ -32,13 +31,13 @@ function PasswordError($value, int $len = 8, $name = "パスワード"){
     }else{
         print '<p style="color:red;">' . $name . "は必須入力です</p>";
     }
-    return $error += 1;
+    
 }
 
-function go(&$error){
-    if(empty($error)){
-        header('Location: check.php');
-        exit();
-    }
-}
+// function go(&$error){
+//     if(empty($error)){
+//         header('Location: check.php');
+//         exit();
+//     }
+// }
 

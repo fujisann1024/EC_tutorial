@@ -2,7 +2,7 @@
 //error check
 require_once("method.php");
 require_once("MyValidator.php");
-go();
+
 ?>
 
 <!DOCTYPE html>
