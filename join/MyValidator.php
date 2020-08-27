@@ -1,12 +1,13 @@
 <?php
+//未使用クラス
 Class MyValidator{
     //エラーメッセージを格納するための変数
-    private $_errors;
+    private $errors;
 
     //コンストラクタ
     public function __construct(string $encoding = 'UTF-8'){
         //プライベート変数$errorsを初期化
-        $_errors = [];
+        $errors = [];
         //内部コードを設定
         mb_internal_encoding($encoding);
         //$_GET,$_POST,$_COOKIEの文字エンコーディングをチェック
@@ -22,7 +23,7 @@ Class MyValidator{
     private function checkEncoding(array $data){
         foreach($data as $key => $value){
             if(!mb_check_encoding($value)){ //与えられた値が内部文字コードと違ったら処理
-                $this->_errors[] = "{$key}は不正な文字コードです";
+                $this->errors[] = "{$key}は不正な文字コードです";
             }
         }
     }
@@ -31,35 +32,35 @@ Class MyValidator{
     private function checkNull(array $data){
         foreach($data as $key => $value){
             if(preg_match('/\0/',$value)){
-                $this->_errors[] = "{$key}は不正な文字を含んでいます";
+                $this->errors[] = "{$key}は不正な文字を含んでいます";
             }
         }
     }
         
-   //必須検証
-    public function requiredCheck(string $value, string $name){
+   //必須検証-1
+    public function requiredCheck($value, string $name){
         if(trim($value) === ''){
-            return '<p style="color:red;">' . $name . "は必須入力です</p>";
+            $this->errors[] = '<p style="color:red;">' . $name . "は必須入力です</p>";
         }
     }
 
-    //文字列長検証($len文字以内であるか)
-    public function lengthCheck(string $value,string $name,int $len){
+    //文字列長検証($len文字以内であるか-2
+    public function lengthCheck($value,string $name,int $len){
         if(trim($value) !== ''){
             if(mb_strlen($value) < $len){
-                return '<p style="color:red;">' . $name . "は" . $len . "文字以上で入力してください</p>";
+                $this->errors[] = '<p style="color:red;">' . $name . "は" . $len . "文字以上で入力してください</p>";
             }
         }
     }
 
-    // //整数型検証
-    // public function intTypeCheck(string $value, string $name){
-    //     if(trim($value) !== ''){
-    //         if(!ctype_digit($value)){
-    //             $this->errors[] = "{$name}は数値で指定してください";
-    //         }
-    //     }
-    // }
+    //整数型検証-
+    public function intTypeCheck($value, string $name){
+        if(trim($value) !== ''){
+            if(!ctype_digit($value)){
+                $this->errors[] = '<p style="color:red;">' . $name . "は数値で指定してください</p>";
+            }
+        }
+    }
 
     // //数値検証範囲($min~$maxの範囲にあるか)
     // public function rangeCheck(string $value, string $name, float $max, float $min){
@@ -90,13 +91,24 @@ Class MyValidator{
     // }
 
     //プライベート変数errorsにエラー情報が含まれている場合には表示
-        
+    public function __invoke(){
+        if(count($this->errors) > 0){
+            foreach($this->errors as $err){
+                print $err;
+            }
+        }
+    }
 }
 
 $v = new MyValidator();
-$error1_1 = $v->requiredCheck($_POST['name'],"名前");
-$error1_2 = $v->requiredCheck($_POST['address'],"名前");
-$error1_3 = $v->requiredCheck($_POST['age'],"名前");
-$error1_4 = $v->requiredCheck($_POST['email'],"名前");
-$error1_5 = $v->requiredCheck($_POST['password'],"名前");
-$error2 = $v->lengthCheck($_POST['password'],"パスワード",4);
+
+$v->requiredCheck($_POST['address'],"住所");
+$v->requiredCheck($_POST['age'],"年齢");
+$v->requiredCheck($_POST['email'],"メールアドレス");
+$v->requiredCheck($_POST['password'],"パスワード");
+$v->requiredCheck($_POST['callnumber'],"電話番号");
+
+
+    
+
+

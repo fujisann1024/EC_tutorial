@@ -1,15 +1,8 @@
 <?php
-
-
 //error check
 require_once("method.php");
-require("MyValidator.php");
-
-
-
-
-
-
+require_once("MyValidator.php");
+go();
 ?>
 
 <!DOCTYPE html>
@@ -28,30 +21,38 @@ require("MyValidator.php");
         <div class = "write">次のフォームにご記入ください</div></br>
             <form action="" method = "post">
             
-                <p>名前<span>※必須</span></p>
+                <p>名前</p><span>※必須</span>
                 <input type="text" name="name" value="<?php xss($_POST['name']); ?>" >
                 <!--エラーメッセージ-->
-                <?php print $error1;?>
+                <?php
+                    NameError($_POST['name']);//空白ではないか
+                ?>
 
-                <p>住所<span>※必須</span></p>
+                <p>住所</p><span>※必須</span>
                 <input type="text" name = "address" value="<?php xss($_POST['address']); ?>">
                     <!--エラーメッセージ-->
                 
                 
-                <p>年齢<span>※必須</span></p>
+                
+                <p>年齢</p><span>※必須</span>
                 <input type="text" name = "age" value="<?php xss($_POST['age']); ?>">
                     <!--エラーメッセージ-->
                 
                 
-                <p>メールアドレス <span>※必須</span></p>
+                <p>メールアドレス </p><span>※必須</span>
                 <input type="text" name = "email" value="<?php xss($_POST['email']); ?>">
                     <!--エラーメッセージ-->
                 
 
-                <p>パスワード<span>※必須</span></p>
+                <p>パスワード</p><span>※必須</span>
                 <input type="text" name = "password" value="<?php xss($_POST['password']); ?>">
                     <!--エラーメッセージ-->
-                    <?php print $error2;?>
+                  
+
+                <p>電話番号</p><span>※必須</span>
+                <input type="text" name = "callnumber" value="<?php xss($_POST['callnumber']); ?>">
+                    <!--エラーメッセージ-->
+               
                 
                 <input type="submit" value="入力を確認する">
                 
