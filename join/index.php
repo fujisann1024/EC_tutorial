@@ -9,9 +9,13 @@ if(isset($_POST['submit'])){
     $validation = new MyValidator($_POST);
     //エラーメッセージを$errors[]に格納していく
     $errors = $validation->validateForm();
+     setSession($errors,'join');
     //エラーの数がゼロになったら確認画面に移動する
     errorCount($errors);  
+  
 }
+
+
 
 
 

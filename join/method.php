@@ -5,7 +5,7 @@ function xss($information, $set = "UTF-8"){
 }   
 //エラー回数カウントメソッド
 function errorCount(array $errors){
-        $err = [];
+    $err = [];
     foreach($errors as $value){
         array_push($err,$value);
     }
@@ -15,4 +15,15 @@ function errorCount(array $errors){
     }
 }
 
+//セッション保存メソッド
+function setSession(array $errors,$val){
+    session_start();
+    $err = [];
+    foreach($errors as $value){
+        array_push($err,$value);
+    }
+    if(count($err) == 0){
+        $_SESSION[$val] = $_POST;
+    }
+}
 
