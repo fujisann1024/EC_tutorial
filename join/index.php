@@ -1,7 +1,20 @@
 <?php
-//error check
+session_start();
+//フォルダの読み込み
 require_once("method.php");
 require_once("MyValidator.php");
+//ボタンを押したときに実行される
+if(isset($_POST['submit'])){
+    //インスタンスの生成
+    $validation = new MyValidator($_POST);
+    //エラーメッセージを$errors[]に格納していく
+    $errors = $validation->validateForm();
+    //エラーの数がゼロになったら確認画面に移動する
+    errorCount($errors);  
+}
+
+
+
 
 ?>
 
@@ -24,9 +37,8 @@ require_once("MyValidator.php");
                 <p>名前</p><span>※必須</span>
                 <input type="text" name="name" value="<?php xss($_POST['name']); ?>" >
                 <!--エラーメッセージ-->
-                <?php
-                    NameError($_POST['name']);//空白ではないか
-                ?>
+                <p class = "error"><?php echo $errors['name'] ?? '';?></p>
+                
 
                 <p>住所</p><span>※必須</span>
                 <input type="text" name = "address" value="<?php xss($_POST['address']); ?>">
@@ -47,14 +59,14 @@ require_once("MyValidator.php");
                 <p>パスワード</p><span>※必須</span>
                 <input type="text" name = "password" value="<?php xss($_POST['password']); ?>">
                     <!--エラーメッセージ-->
-                  
+                 <p><?php  print $errors['password'] ?? '' ;?></p>
 
                 <p>電話番号</p><span>※必須</span>
-                <input type="text" name = "callnumber" value="<?php xss($_POST['callnumber']); ?>">
+                <input type="text" name = "tellphone" value="<?php xss($_POST['tellphone']); ?>">
                     <!--エラーメッセージ-->
                
                 
-                <input type="submit" value="入力を確認する">
+                <input type="submit" value="入力を確認する" name="submit">
                 
     
             </form>

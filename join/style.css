@@ -28,6 +28,10 @@ footer div {
   font-weight: 800;
 }
 
+.format .error {
+  color: red;
+}
+
 .format span {
   background-color: red;
 }
