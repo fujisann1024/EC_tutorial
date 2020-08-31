@@ -9,10 +9,9 @@ if(isset($_POST['submit'])){
     $validation = new MyValidator($_POST);
     //エラーメッセージを$errors[]に格納していく
     $errors = $validation->validateForm();
-    //エラーの数がゼロになったらセッションにポストデータを渡す
-    setSession($errors,'join');
-    //エラーの数がゼロになったら確認画面に移動する
-    errorCount($errors);  
+    //エラーの数がゼロになったらSESSIONのjoinにPOSTデータを渡し、check.phpに移動する
+    setSes_movFile($errors,'join','check.php');
+    
   
 }
 
@@ -43,28 +42,28 @@ if(isset($_POST['submit'])){
                 <p>住所</p><span>※必須</span>
                 <input type="text" name = "address" value="<?php xss($_POST['address']); ?>">
                     <!--エラーメッセージ-->
-                
+                <p class = "error"><?php echo $errors['address'] ?? '';?></p>
                 
                 
                 <p>年齢</p><span>※必須</span>
                 <input type="text" name = "age" value="<?php xss($_POST['age']); ?>">
                     <!--エラーメッセージ-->
-                
+                <p class = "error"><?php echo $errors['age'] ?? '';?></p>
                 
                 <p>メールアドレス </p><span>※必須</span>
                 <input type="text" name = "email" value="<?php xss($_POST['email']); ?>">
                     <!--エラーメッセージ-->
-                
+                <p class = "error"><?php echo $errors['email'] ?? '';?></p>
 
                 <p>パスワード</p><span>※必須</span>
                 <input type="text" name = "password" value="<?php xss($_POST['password']); ?>">
                     <!--エラーメッセージ-->
-                 <p><?php  print $errors['password'] ?? '' ;?></p>
+                 <p class = "error"><?php  print $errors['password'] ?? '' ;?></p>
 
                 <p>電話番号</p><span>※必須</span>
                 <input type="text" name = "tellphone" value="<?php xss($_POST['tellphone']); ?>">
                     <!--エラーメッセージ-->
-               
+                <p class = "error"><?php echo $errors['tellphone'] ?? '';?></p>   
                 
                 <input type="submit" value="入力を確認する" name="submit">
                 

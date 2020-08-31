@@ -4,7 +4,7 @@ class MyValidator{
     //プロパティ
     private $data;
     private $errors = [];
-    private static $fields = ['name','password'];
+    private static $fields = ['name','address','age','email','password'];
 
     //コンストラクタ~インスタンスを生成したときに実行される
 
@@ -28,30 +28,87 @@ class MyValidator{
         }
         //フォームがあるかを確認したのでメソッドを実行
         $this->validatorName();
+        $this->validatorAddress();
+        $this->validatorAge();
+        $this->validatorEmail();
         $this->validatorPassword();
+        $this->validatorTellphone();
         return $this->errors;
     }
-
+    
     private function validatorName(){
         //trim ~ 送られてきた名前のPOSTの値がスペースを除いた文字列を返す
         $val = trim($this->data['name']);
 
-        if(empty($val)){
-            $this->addError('name','名前が入力されていません');
-        }
+        if(empty($val)) $this->addEmptyError('name','名前');
     }
 
-    public function validatorPassword(){
+    private function validatorAddress(){
+        $val = trim($this->data['address']);
+
+        if(empty($val)) $this->addEmptyError('address','住所');
+
+    }
+    
+    private function validatorAge(){
+        $val = trim($this->data['age']);
+
+        if(empty($val)) $this->addEmptyError('age','年齢');
+        
+        if(!empty($val)) $this->intTypeCheck($val,'age','年齢');
+    }
+
+    private function validatorEmail(){
+        $val = trim($this->data['email']);
+
+        if(empty($val)) $this->addEmptyError('email','メールアドレス');
+    
+    }
+
+    private function validatorPassword(){
         $val = trim($this->data['password']);
 
-        if(empty($val)){
-            $this->addError('password','パスワードが入力されていません');
+        if(empty($val)) $this->addEmptyError('password','パスワード');
+
+        if(!empty($val)) $this->lengthCheck($val,'password','パスワード',8);
+    }
+
+    private function validatorTellphone(){
+        $val = trim($this->data['tellphone']);
+
+        if(empty($val)) $this->addEmptyError('tellphone',"電話番号");
+
+        if(!empty($val)) $this->intTypeCheck($val,'tellphone',"電話番号");
+    }
+
+
+
+
+    //メソッドが実行されたら$errorsプロパティの指定の$keyに$messageを代入
+    private function addEmptyError(string $key,string $message){
+        $this->errors[$key] = "{$message}は入力されていません";
+    }
+
+        //文字列長検証($len文字以内であるか-2
+    private function lengthCheck($val,string $key, string $name,int $len){
+        if(mb_strlen($val) < $len){
+             $this->errors[$key] = "{$name}は{$len}文字以上で入力してください";
         }
     }
 
-    //メソッドが実行されたら$errorsプロパティの指定の$keyに$messageを代入
-    private function addError($key,$message){
-        $this->errors[$key] = $message;
+        //整数型検証-
+    private function intTypeCheck($val, string $key, string $name){
+        if(!ctype_digit($val)){
+            $this->errors[$key] = "{$name}は数値で指定してください";
+        }        
+    }
+
+        //正規表現パターン(パターン$patternに合致するか)
+    private function regexCheck(string $value, string $name, string $pattern){
+        if(!preg_match($pattern,$value)){
+            $tmp = implode(', ', $opts);
+            $this->errors[] = "{$name}は正しい形式で入力してください";
+        }
     }
 
 }
@@ -99,23 +156,19 @@ class MyValidator{
 //         }
 //     }
 
-//     // //数値検証範囲($min~$maxの範囲にあるか)
-//     // public function rangeCheck(string $value, string $name, float $max, float $min){
-//     //     if(trim($value) !== ''){
-//     //         if($value > $max || $value < $min){
-//     //             $this->errors[] = "{$name}は{$min}~{$max}で指定してください";
-//     //         }
-//     //     }
-//     // }
-//     // //正規表現パターン(パターン$patternに合致するか)
-//     // public function regexCheck(string $value, string $name, string $pattern){
-//     //     if(trim($value) !== ''){
-//     //         if(!preg_match($pattern,$value)){
-//     //             $tmp = implode(', ', $opts);
-//     //             $this->errors[] = "{$name}は正しい形式で入力してください";
-//     //         }
-//     //     }
-//     // }
+    // //数値検証範囲($min~$maxの範囲にあるか)
+    // public function rangeCheck(string $value, string $name, float $max, float $min){  
+    //         if($value > $max || $value < $min){
+    //             $this->errors[] = "{$name}は{$min}~{$max}で指定してください";
+    //         }  
+    // }
+    // //正規表現パターン(パターン$patternに合致するか)
+    // public function regexCheck(string $value, string $name, string $pattern){
+    //         if(!preg_match($pattern,$value)){
+    //             $tmp = implode(', ', $opts);
+    //             $this->errors[] = "{$name}は正しい形式で入力してください";
+    //         }
+    // }
     
 //     // //配列要素検証(配列$opsの要素のいずれかであるか)
 //     // public function inArrayCheck(string $value, string $name, array $opts){
