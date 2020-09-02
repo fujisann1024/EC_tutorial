@@ -1,9 +1,14 @@
 <?php
 session_start();
 require_once("method.php");
+require_once("../dbconnect.php");
+$db = getDb();
 //セッションのjoinが空だったら会員登録画面に戻す
 returnCheck($_SESSION,'join');
 
+$statement = $db->prepare('INSERT INTO members ( name, age, address, email, tellphone, password, created )
+                           VALUES (:name, :age, :address, :email, :tellphone, :password, :created)');
+$statement->bindValue('');
 
 
 ?>
@@ -26,7 +31,21 @@ returnCheck($_SESSION,'join');
           <input type="hidden" name="action" value="submit">
             <div>名前</div>
             <p><?php xss($_SESSION['join']['name']);?></p>
-            
+
+            <div>住所</div>
+            <p><?php xss($_SESSION['join']['address']);?></p>
+
+            <div>年齢</div>
+            <p><?php xss($_SESSION['join']['age']);?></p>
+
+            <div>メールアドレス</div>
+            <p><?php xss($_SESSION['join']['email']);?></p>
+
+            <div>パスワード</div>
+            <p><?php print "表示できません」";?></p>
+
+            <div>電話番号</div>
+            <p><?php xss($_SESSION['join']['tellphone']);?></p>
         </form>
 
     </div>
