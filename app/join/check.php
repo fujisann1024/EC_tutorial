@@ -1,14 +1,17 @@
 <?php
 session_start();
 require_once("method.php");
-require_once("../dbconnect.php");
-$db = getDb();
+require_once("../dbconnect2.php");
 //セッションのjoinが空だったら会員登録画面に戻す
 returnCheck($_SESSION,'join');
 
-$statement = $db->prepare('INSERT INTO members ( name, age, address, email, tellphone, password, created )
-                           VALUES (:name, :age, :address, :email, :tellphone, :password, :created)');
-$statement->bindValue('');
+if(!empty($_POST)){
+    $i = new DBcon($_SESSION,'join');
+    $i->registerMember();
+    unset($_SESSION['join']);
+    header('Location: thanks.php');
+    exit();
+}
 
 
 ?>
@@ -46,6 +49,11 @@ $statement->bindValue('');
 
             <div>電話番号</div>
             <p><?php xss($_SESSION['join']['tellphone']);?></p>
+
+            <div>
+                <a href="index.php?action=rewrite">書き直す</a> |
+                <input type = "submit" value = "登録する">
+            </div>
         </form>
 
     </div>

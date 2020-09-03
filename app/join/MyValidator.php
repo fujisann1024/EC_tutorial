@@ -4,7 +4,7 @@ class MyValidator{
     //プロパティ
     private $data;
     private $errors = [];
-    private static $fields = ['name','address','age','email','password'];
+    private static $fields = ['name','address','age','email','password','tellphone'];
 
     //コンストラクタ~インスタンスを生成したときに実行される
 

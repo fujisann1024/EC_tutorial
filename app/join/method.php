@@ -8,7 +8,6 @@ function xss($information, $set = "UTF-8"){
 
 //エラーがゼロならセッションに保存して指定のメソッド
 function setSes_movFile(array $errors,$val,$file){
-    session_start();
     if(count($errors) == 0){
         $_SESSION[$val] = $_POST;
         header("Location: $file");
