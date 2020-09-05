@@ -4,33 +4,17 @@ require_once("method.php");
 require_once("../dbconnect.php");
 //セッションのjoinが空だったら会員登録画面に戻す
 returnCheck($_SESSION,'join');
-$db = getDb();
-
 
 if(!empty($_POST)){
     try{
-        //INSERT命令の準備
-        $stt = $db->prepare('INSERT INTO members 
-        ( name, age, address, email, tellphone, password) 
-        VALUES (:name, :age, :address, :email, :tellphone, :password)');
-        //INSERT命令にセット
-        $stt->bindValue(':name',$_SESSION['join']['name']);
-        $stt->bindValue(':age',$_SESSION['join']['age']);
-        $stt->bindValue(':address',$_SESSION['join']['address']);
-        $stt->bindValue(':email',$_SESSION['join']['email']);
-        $stt->bindValue(':tellphone',$_SESSION['join']['tellphone']);
-        $stt->bindValue(':password',$_SESSION['join']['password']);
-                    //SQLを実行
-        $stt->execute();
+        $DB = new DBcon($_SESSION,'join');
+        $DB->registerMember();
         header('Location: thanks.php');
         exit();
-        }catch(PDOException $e){
-            print "エラーメッセージ:{$e->getMessage()}";
-        }
-   
+    }catch(PDOException $e){
+        print "エラーメッセージ:{$e->getMessage()}";
+    }
 }
-
-
 
 ?>
 
