@@ -3,11 +3,13 @@ session_start();
 //フォルダの読み込み
 require_once("method.php");
 require_once("MyValidator.php");
+require_once("../dbconnect.php");
 
 //ボタンを押したときに実行される
 if(isset($_POST['submit'])){
     //インスタンスの生成
     $validation = new MyValidator($_POST);
+    
     //エラーメッセージを$errors[]に格納していく
     $errors = $validation->validateForm();
     //エラーの数がゼロになったらSESSIONのjoinにPOSTデータを渡し、check.phpに移動する
