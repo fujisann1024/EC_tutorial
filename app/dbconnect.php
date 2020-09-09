@@ -4,14 +4,13 @@
 class DBcon{
     private $data;
     private $key;
-    private $pos;
+    
+    
 
-
-    public function __construct($Session_data,$Session_key){
-        session_start();
-        $this->data = $Session_data;
-        $this->key = $Session_key;
-        $pos = $_POST;
+    public function __construct($data,$key){
+        $this->data = $data;
+        $this->key = $key;
+        
     }
 
     
@@ -37,30 +36,31 @@ class DBcon{
             print "エラーメッセージ:{$e->getMessage()}";
         } 
     }
-    //重複確認メソッド
-    public function duplicateCheck($error){
-        if(empty($error)){
-           try{
-            $db = $this->getDb();
-            //条件内でemailの値が一致したmembersテーブルのemailの件数をすべて取得しcntというカラムで取得
-            $member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE email = ?');
-            //フォームから受け取ったメールアドレスのデータをemailに代入して実行
-            //POSTのemailがデータベース内に入ってれば1、入っていなければ0になる
-            $member->execute(array($_POST['email']));
-            //[cnt => 0 or 1]が$recodeに代入される
-            $recode = $member->fetch();
-            if($recode['cnt'] > 0){
-                print "メールアドレスが重複しています";
-            }
-           }catch(PDOException $e){
-             print "エラーメッセージ:{$e->getMessage()}";
-           } 
-        }
-        
-    }
 
+    // //重複確認メソッド
+    // function duplicateCheck(){
 
-    private function getDb(){
+    //        try{
+    //         $db = $this->getDb();
+    //         //条件内でemailの値が一致したmembersテーブルのemailの件数をすべて取得しcntというカラムで取得
+    //         $member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE :email');
+    //         //フォームから受け取ったメールアドレスのデータをemailに代入して実行
+    //         $member->bindValue(':email',$this->data[$this->key]);
+    //         //POSTのemailがデータベース内に入ってれば1、入っていなければ0になる
+
+    //         $member->execute();
+    //         //[cnt => 0 or 1が$recodeに代入される
+    //         $recode = $member->fetch();
+    //         if($recode['cnt'] > 0){
+    //             $this->$errors[$this->key] ="メールアドレスが重複しています";
+    //         }
+    //        }catch(PDOException $e){
+    //            $this->$errors[$this->key] "エラーメッセージ:{$e->getMessage()}";
+    //        } 
+    //        return $errors; 
+    // }
+
+    public function getDb(){
         $dsn = 'mysql:dbname=EC; host=127.0.0.1; charset=utf8';
         $user = 'root';
         $password = '';

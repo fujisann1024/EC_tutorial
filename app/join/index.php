@@ -12,6 +12,7 @@ if(isset($_POST['submit'])){
     
     //エラーメッセージを$errors[]に格納していく
     $errors = $validation->validateForm();
+   
     //エラーの数がゼロになったらSESSIONのjoinにPOSTデータを渡し、check.phpに移動する
     setSes_movFile($errors,'join','check.php');  
 }
@@ -55,6 +56,7 @@ if(isset($_POST['submit'])){
                 <input type="text" name = "email" value="<?php xss($_POST['email']); ?>">
                     <!--エラーメッセージ-->
                 <p class = "error"><?php echo $errors['email'] ?? '';?></p>
+                
 
                 <p>パスワード</p><span>※必須</span>
                 <input type="text" name = "password" value="<?php xss($_POST['password']); ?>">

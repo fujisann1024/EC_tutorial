@@ -1,4 +1,5 @@
 <?php
+
 //xxs対策メソッド
 function xss($information, $set = "UTF-8"){
     print(htmlspecialchars($information,ENT_QUOTES | ENT_HTML5, $set));
@@ -21,4 +22,6 @@ function returnCheck(array $SESSION,$val){
         exit();
     }
 }
+
+
 
