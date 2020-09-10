@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("method.php");
+require_once("../method.php");
 require_once("../dbconnect.php");
 //セッションのjoinが空だったら会員登録画面に戻す
 returnCheck($_SESSION,'join');
