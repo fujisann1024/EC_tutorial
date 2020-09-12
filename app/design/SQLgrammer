@@ -4,10 +4,10 @@ CREATE TABLE members (
     age INT,
     address VARCHAR(50),
     email VARCHAR(100),
-    tellphone INT,
+    tellphone VARCHAR(11),
     password VARCHAR(100),
-    created DATETIME,
-    deleted DATETIME,
+    created TIMESTAMP,
+    deleted TIMESTAMP,
     modified TIMESTAMP
 );
 

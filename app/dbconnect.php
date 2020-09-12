@@ -6,6 +6,7 @@ class DBcon{
     private $key;
     private $errors2 = [];
 
+
     public function __construct($data,$key){
         $this->data = $data;
         $this->key = $key;
