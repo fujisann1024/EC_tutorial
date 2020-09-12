@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('dbconnect.php');
 require_once('method.php');
 require_once('join/MyValidator.php');
@@ -14,21 +15,26 @@ if(!empty($_POST)){
         //フォームの入力値が空でない場合
         if($_POST['email'] !== '' && $_POST['password'] !== ''){
             //SQLを発行し、?に入力されたEmailを代入
-            $login = $query->prepare('SELECT password FROM members WHERE email=?');            
+            $login = $query->prepare('SELECT password,id FROM members WHERE email=?');            
             $login->execute(array(
                 $_POST['email'],
             ));
             //データが帰ってくればログイン成功(true),帰ってこなけっればログイン失敗(false)
-            $pass = $login->fetch(PDO::FETCH_ASSOC);// ["password"]=> string
+            $pass = $login->fetch(PDO::FETCH_ASSOC);// ["カラム名"]=> カラム内の値
+            //var_dump($pass);
+            /*
+            array(2) { ["password"]=> string(60) "$2y$10$xws/228wRozBDJ
+            PDp1T12upEqADsWXz1hYPmhHsfy4b5DOR99wLPy" ["id"]=> string(2) "12" }
+             */
             //入力したパスワードとデータベース上にあるハッシュ化されたパスワードを比較する->一致したらtrue
             $PasMatch = password_verify($_POST['password'],$pass['password']);
             //$PasMatchがtrueならばセッションにid情報を代入
             if($PasMatch){
-                $_SESSION['id'] = $member['id'];
+                $_SESSION['id'] = $pass['id'];
                 //セッションのtimeキーを設定してそこに現在の時間を代入する
                 $_SESSION['time'] = time();
 
-                header('Location: login.html');
+                header('Location: Write/write.php');
                 exit();
                 if($_POST['save'] === 'on'){
                     //time()今の時間を秒単位で返す
@@ -45,6 +51,7 @@ if(!empty($_POST)){
             $error['login'] = 'blank';
         }
 }
+
 
 ?>
 <!DOCTYPE html>

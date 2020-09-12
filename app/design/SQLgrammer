@@ -6,7 +6,7 @@ CREATE TABLE members (
     email VARCHAR(100),
     tellphone VARCHAR(11),
     password VARCHAR(100),
-    created TIMESTAMP,
+    created DATATIME,
     deleted TIMESTAMP,
     modified TIMESTAMP
 );
