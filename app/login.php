@@ -9,7 +9,7 @@ if($_COOKIE['email'] !== ''){
 }
 if(!empty($_POST)){
     //インスタンスを生成
-    $DB = new DBcon(null,null);
+    $DB = new NotArgsDBcon();
     //データベースにアクセス
     $query = $DB->getDb();
         //フォームの入力値が空でない場合
@@ -31,8 +31,6 @@ if(!empty($_POST)){
             //$PasMatchがtrueならばセッションにid情報を代入
             if($PasMatch){
                 $_SESSION['id'] = $pass['id'];
-                //セッションのtimeキーを設定してそこに現在の時間を代入する
-                $_SESSION['time'] = time();
 
                 header('Location: Write/write.php');
                 exit();

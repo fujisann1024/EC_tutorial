@@ -15,10 +15,10 @@ require_once('dbconnect.php');
             exit();
         }
     }
-//確認画面からアクセスされたら会員登録画面に戻すメソッド
-    function returnCheck(array $SESSION,$val){
+//していからアクセスされたら指定のファイルに戻すメソッド
+    function returnCheck(array $SESSION,$val,$file){
         if(!isset($SESSION[$val])){
-            header('Location: index.php');
+            header("Location: $file");
             exit();
         }
     }
@@ -42,11 +42,6 @@ require_once('dbconnect.php');
         }
         return $error2;
     }
+         
+        
     
-    function loginCheck($ary_p,$ary_s,$value = 'login'){
-        
-        
-
-       
-        
-    }

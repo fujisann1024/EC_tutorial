@@ -4,8 +4,6 @@
 class DBcon{
     private $data;
     private $key;
-    private $errors2 = [];
-
 
     public function __construct($data,$key){
         $this->data = $data;
@@ -50,28 +48,43 @@ class DBcon{
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $db;
     }
+   
+}
 
-    
-}  
-// $i = new DBcon($_SESSION,'join');
-// print "";
-// var_dump($i);
-// function duplicateCheck(){
+class NotArgsDBcon extends DBcon{
+    public function __construct(){
 
-//     try{
-//      $db = $this->getDb();
-//      //条件内でemailの値が一致したmembersテーブルのemailの件数をすべて取得しcntというカラムで取得
-//      $member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE email=?');
-//      //フォームから受け取ったメールアドレスのデータをemailに代入して実行
-//      //POSTのemailがデータベース内に入ってれば1、入っていなければ0になる
-//      $member->execute(array($this->data[$this->key]));
-//      //[cnt => 0 or 1が$recodeに代入される
-//      $recode = $member->fetch();
-//      if($recode['cnt'] > 0){
-//          $this->$errors2[$this->key] ="メールアドレスが重複しています";
-//      }
-//     }catch(PDOException $e){
-//         $this->$errors2[$this->key] = "エラーメッセージ:{$e->getMessage()}";
-//     } 
-//     return $errors2; 
-// }
+    }
+
+    public function getInfomation($SESSION,$val){
+        if(isset($SESSION[$val])){
+            $connectDB = parent::getDb();
+            $users = $connectDB->prepare('SELECT * FROM members WHERE id=?');
+            $users->execute(array($SESSION[$val]));
+            //?に代入した値とデータベース上にある値と一致すればカラム名をキーとして
+            //カラム名の中の値をバリューとして配列で$userに渡す
+            $user = $users->fetch();
+            return $user;
+        }
+    }
+
+    public function postMessage($POST,$messageKey,$user){
+        if(!empty($POST)){
+            //メッセージが空のまま投稿されるのを防ぐ
+            if($POST[$messageKey] !== ''){
+                $connectDB = parent::getDb();
+                $message = $connectDB->prepare('INSERT INTO posts SET member_id=?,message=?,created=NOW()');
+                $message->execute(array(
+                    $user,
+                    $POST[$messageKey] 
+                ));
+                 //更新すると$_POST['message]は保持したままなので重複してメッセージをデータベースに記録してしまう
+            header('Location: write.php');//メッセージの投稿が終わったら自分自身を表示する
+            exit();
+
+            }
+        }
+    }
+
+}
+

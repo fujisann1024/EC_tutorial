@@ -3,45 +3,21 @@ session_start();
 require_once('../method.php');
 require_once('../dbconnect.php');
 
-if(isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()){
-    $_SESSION['time'] = time();
-
-    $DB = new DBcon(null, null);
-    $connectDB = $DB->getDB();
-    $users = $connectDB->prepare('SELECT * FROM members WHERE id=?');
-    $users->execute(array($_SESSION['id']));
-    //?に代入した値とデータベース上にある値と一致すればカラム名をキーとして
-    //カラム名の中の値をバリューとして配列で$userに渡す
-    $user = $users->fetch();
-}else{
-    //$_SESSION['id']が空(=直接write.phpにアクセス)またはログインしてから1時間経ったら
-    //home.htmlに戻す
-    header('Location: ../home.html');
-    exit();
-}
+//セッションのidが空だった場合(直接write.htmlにアクセスしたとき)
+//home.htmlに戻る
+returnCheck($_SESSION,'id','../home.html');
+$CRUD = new NotArgsDBcon();
+//入力したアカウント情報をもとに会員登録情報を$userに代入
+$user = $CRUD->getInfomation($_SESSION,'id');
 
 //投稿機能
-if(!empty($_POST)){
-    //メッセージが空のまま投稿されるのを防ぐ
-    if($_POST['message'] !== ''){
-        $DB = new DBcon(null, null);
-        $connectDB = $DB->getDB();
-        $message = $connectDB->prepare('INSERT INTO posts SET member_id=?,message=?,created=NOW()');
-        $message->execute(array(
-            $user['id'],
-            $_POST['message']
-        )
-        );
-        //更新すると$_POST['message]は保持したままなので重複してメッセージをデータベースに記録してしまう
-        header('Location: write.php');//メッセージの投稿が終わったら自分自身を表示する
-        exit();
+$CRUD->postMessage($_POST,'message',$user['id']);
 
-    }
-}
+
 
 //投稿内容を表示する機能
-$DB = new DBcon(null, null);
-$connectDB = $DB->getDB();
+$DB = new NotArgsDBcon();
+$connectDB = $DB->getDb();
 //値を入れるわけではないのでquery()でよい             テーブル名のエイリアス
 $posts = $connectDB->query('SELECT m.name, p.* FROM members m, 
 posts p WHERE m.id = p.member_id ORDER BY p.created DESC');
@@ -50,7 +26,7 @@ posts p WHERE m.id = p.member_id ORDER BY p.created DESC');
 
 //var_dump($user);
 
-var_dump($posts);
+//var_dump($posts);
 ?>
 <!DOCTYPE html>
 <html lang="en">
