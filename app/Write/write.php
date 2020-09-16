@@ -22,11 +22,15 @@ $connectDB = $DB->getDb();
 $posts = $connectDB->query('SELECT m.name, p.* FROM members m, 
 posts p WHERE m.id = p.member_id ORDER BY p.created DESC');
 
+if(isset($_GET['res'])){
+    $response = $connectDB->prepare('SELECT m.name, p.* 
+                              FROM members m, posts p 
+                              WHERE m.id = p.member_id AND p.id = ?');
+    $response->execute(array($_GET['res']));
+    $table = $response->fetch();
+    $message = '@' . $table['name'] . '' . $table['message'];
+}
 
-
-//var_dump($user);
-
-//var_dump($posts);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,9 +49,10 @@ posts p WHERE m.id = p.member_id ORDER BY p.created DESC');
 <div>
     <form action="" method="post">
         <div>
-            <p><?php xss($user['name']); ?></p>
+            <p><?php xss($user['name']); ?>さん</p>
+            <!-- value属性がないのでタグの間に記入する-->
             <textarea name="message" id="" cols="50" rows="10">
-
+                <?php xss($message);?>
             </textarea>
             <input type = "hidden" name = "replay_post_id" value="">
         </div>
@@ -57,10 +62,13 @@ posts p WHERE m.id = p.member_id ORDER BY p.created DESC');
         
     </form>
     <!--投稿内容を表示-->
-    <table boder = "1">
+    <table border = "1">
         <?php foreach($posts as $post):?>
             <tr>
-                <p><?php xss($post['message']);?></p>
+                <td>
+                    <?php xss($post['message']);?>
+                    <a href="write.php?res=<?php xss($post['id']);?>">Re</a>
+                </td>              
             </tr>
         <?php endforeach; ?> 
     </table>

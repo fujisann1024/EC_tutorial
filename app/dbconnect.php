@@ -52,6 +52,7 @@ class DBcon{
 }
 
 class NotArgsDBcon extends DBcon{
+    //引数なしのコンストラクタでオーバーライド
     public function __construct(){
 
     }
@@ -73,7 +74,8 @@ class NotArgsDBcon extends DBcon{
             //メッセージが空のまま投稿されるのを防ぐ
             if($POST[$messageKey] !== ''){
                 $connectDB = parent::getDb();
-                $message = $connectDB->prepare('INSERT INTO posts SET member_id=?,message=?,created=NOW()');
+                $message = $connectDB->prepare('INSERT INTO posts 
+                                                SET member_id=?,message=?,reply_message_id,created=NOW()');
                 $message->execute(array(
                     $user,
                     $POST[$messageKey] 

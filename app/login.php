@@ -71,12 +71,13 @@ if(!empty($_POST)){
     <div>
         <p>メールアドレスとパスワードを記入してログインしてください</p>
         <p>入会手続きがまだの方はこちらから</p>
-        <p><a href="join/index.php"></a>会員登録をする</p>
+        <p><a href="join/index.php">会員登録をする</a></p>
     </div>
     <form action="" method = "post">
         <p>メールアドレス</p><br>
         <input type = "text" name = "email" value = "<?php xss($email);?>">
         <!--testcode email.com-->
+        <!--         line-->
         <p>
         <?php print $error['login'] == 'blank' ? 'メールアドレスとパスワードを入力して下さい': '';?>
         </p>
@@ -85,6 +86,7 @@ if(!empty($_POST)){
         <p>パスワード</p><br>
         <input type = "password" name = "password" value = "<?php xss($_POST['password']);?>">
         <!--testcode 44444444-->
+        <!--testcode 66666666-->
         <p>
         <?php print $error['login'] == 'feild' ? 'ログインに失敗しました。正しくご記入ください': '';?>
         </p>
