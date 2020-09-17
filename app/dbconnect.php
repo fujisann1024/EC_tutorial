@@ -51,42 +51,4 @@ class DBcon{
    
 }
 
-class NotArgsDBcon extends DBcon{
-    //引数なしのコンストラクタでオーバーライド
-    public function __construct(){
-
-    }
-
-    public function getInfomation($SESSION,$val){
-        if(isset($SESSION[$val])){
-            $connectDB = parent::getDb();
-            $users = $connectDB->prepare('SELECT * FROM members WHERE id=?');
-            $users->execute(array($SESSION[$val]));
-            //?に代入した値とデータベース上にある値と一致すればカラム名をキーとして
-            //カラム名の中の値をバリューとして配列で$userに渡す
-            $user = $users->fetch();
-            return $user;
-        }
-    }
-
-    public function postMessage($POST,$messageKey,$user){
-        if(!empty($POST)){
-            //メッセージが空のまま投稿されるのを防ぐ
-            if($POST[$messageKey] !== ''){
-                $connectDB = parent::getDb();
-                $message = $connectDB->prepare('INSERT INTO posts 
-                                                SET member_id=?,message=?,reply_message_id,created=NOW()');
-                $message->execute(array(
-                    $user,
-                    $POST[$messageKey] 
-                ));
-                 //更新すると$_POST['message]は保持したままなので重複してメッセージをデータベースに記録してしまう
-            header('Location: write.php');//メッセージの投稿が終わったら自分自身を表示する
-            exit();
-
-            }
-        }
-    }
-
-}
 

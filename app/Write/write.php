@@ -1,12 +1,13 @@
 <?php
 session_start();
 require_once('../method.php');
-require_once('../dbconnect.php');
+// require_once('../dbconnect.php');
+require_once('../CRUD.php');
 
 //セッションのidが空だった場合(直接write.htmlにアクセスしたとき)
 //home.htmlに戻る
 returnCheck($_SESSION,'id','../home.html');
-$CRUD = new NotArgsDBcon();
+$CRUD = new CRUD();
 //入力したアカウント情報をもとに会員登録情報を$userに代入
 $user = $CRUD->getInfomation($_SESSION,'id');
 
@@ -16,7 +17,7 @@ $CRUD->postMessage($_POST,'message',$user['id']);
 
 
 //投稿内容を表示する機能
-$DB = new NotArgsDBcon();
+$DB = new CRUD();
 $connectDB = $DB->getDb();
 //値を入れるわけではないのでquery()でよい             テーブル名のエイリアス
 $posts = $connectDB->query('SELECT m.name, p.* FROM members m, 
@@ -64,10 +65,15 @@ if(isset($_GET['res'])){
     <!--投稿内容を表示-->
     <table border = "1">
         <?php foreach($posts as $post):?>
-            <tr>
+            <tr>削除
                 <td>
                     <?php xss($post['message']);?>
                     <a href="write.php?res=<?php xss($post['id']);?>">Re</a>
+                    <p>
+                        <a href="view.php?id=<?php xss($post['id'])?>">
+                            <?php xss($post['created'])?><span>[削除]</span>
+                        </a>
+                    </p>
                 </td>              
             </tr>
         <?php endforeach; ?> 
