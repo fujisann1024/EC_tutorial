@@ -11,17 +11,11 @@ $CRUD = new CRUD();
 //入力したアカウント情報をもとに会員登録情報を$userに代入
 $user = $CRUD->getInfomation($_SESSION,'id');
 
-//投稿機能
+//ログインしたユーザーのメッセージをデータベースに記録
 $CRUD->postMessage($_POST,'message',$user['id']);
 
-
-
-//投稿内容を表示する機能
-$DB = new CRUD();
-$connectDB = $DB->getDb();
-//値を入れるわけではないのでquery()でよい             テーブル名のエイリアス
-$posts = $connectDB->query('SELECT m.name, p.* FROM members m, 
-posts p WHERE m.id = p.member_id ORDER BY p.created DESC');
+//投稿内容を$postsにreturnするメソッド
+$posts = $CRUD->messageSelect();
 
 if(isset($_GET['res'])){
     $response = $connectDB->prepare('SELECT m.name, p.* 
@@ -65,13 +59,20 @@ if(isset($_GET['res'])){
     <!--投稿内容を表示-->
     <table border = "1">
         <?php foreach($posts as $post):?>
-            <tr>削除
+            <tr>
                 <td>
                     <?php xss($post['message']);?>
+                    <!--返信リンク　-->
                     <a href="write.php?res=<?php xss($post['id']);?>">Re</a>
-                    <p>
+                    <p><!--ユーザー画面に移動-->
                         <a href="view.php?id=<?php xss($post['id'])?>">
-                            <?php xss($post['created'])?><span>[削除]</span>
+                        <!--投稿した日づけでリンクを張る-->
+                            <?php xss($post['created'])?>
+                            <span>
+                               <?php if ($_SESSION['id'] == $post['member_id']): ?>
+                                <a href="delete.php?id=<?php xss($post['id']) ?>">[削除]</a>
+                               <?php endif; ?> 
+                            </span>
                         </a>
                     </p>
                 </td>              

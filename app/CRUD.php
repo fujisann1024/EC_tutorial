@@ -37,6 +37,13 @@ class CRUD extends DBcon{
         }
     }
 
+    public function messageSelect(){
+        $connectDB = parent::getDb();
+        $posts = $connectDB->query('SELECT m.name, p.* FROM members m, posts p
+         WHERE m.id = p.member_id ORDER BY p.created DESC');
+         return $posts;
+    }
+
     public function postData($SESSION, $val){
         $connectDB = parent::getDb();
         $data = $connectDB->prepare('SELECT m.name, p.* 

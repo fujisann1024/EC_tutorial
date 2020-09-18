@@ -9,7 +9,7 @@ if($_COOKIE['email'] !== ''){
 }
 if(!empty($_POST)){
     //インスタンスを生成
-    $DB = new NotArgsDBcon();
+    $DB = new CRUD();
     //データベースにアクセス
     $query = $DB->getDb();
         //フォームの入力値が空でない場合

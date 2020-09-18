@@ -1,6 +1,5 @@
 <?php
 
-
 class DBcon{
     private $data;
     private $key;
@@ -11,8 +10,6 @@ class DBcon{
         
     }
 
-
-    
     //会員登録メソッド
     public function registerMember(){
         
